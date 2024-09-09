@@ -1,7 +1,6 @@
 import { Controller, Get, Param, Body, Post, Query } from '@nestjs/common';
 import {DNAService} from './dna.service';
 import {DNAdto, CreateDNAdto} from './dto'
-import { DNA } from './entity/dna.entity';
 
 @Controller('dna')
 export class DNAController {
@@ -13,8 +12,8 @@ export class DNAController {
    * Get http://localhost:3000/dna/dna=searchKey&levenshtein=1
    */
     @Get()
-    findAll(@Query("search") searchFor:string , @Query("levenshtein") levenshtein?: number){
-      const dna_array=   this.DNAService.findAll({dna:searchFor, levenshtein: levenshtein || 0});
+    findAll(@Query("search") search:string , @Query("levenshtein") levenshtein?: number){
+      const dna_array=   this.DNAService.findAll({dna:search ?? "", levenshtein: levenshtein || 0});
       return dna_array
     }
 
