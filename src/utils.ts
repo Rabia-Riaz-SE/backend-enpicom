@@ -19,6 +19,5 @@ export default class Utils {
         }
         return arr[str1.length][str2.length];
     }
-
 }
 
