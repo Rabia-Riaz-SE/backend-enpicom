@@ -12,8 +12,8 @@ export class DNAController {
    * Get http://localhost:3000/dna/dna=searchKey&levenshtein=1
    */
     @Get()
-    find(@Query("search") search:string , @Query("levenshtein") levenshtein?: number){
-      const result =   this.DNAService.find({DNA:search ?? "", levenshtein: levenshtein || 0});
+    find(@Query("search") search:string , @Query("levenshtein") levenshtein?: string){
+      const result =   this.DNAService.find({DNA:search || "", levenshtein: levenshtein});
       return result
     }
 

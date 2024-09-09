@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { DNAController } from './dna.controller';
 import { DNAService } from './dna.service';
 import { CreateDNADto, SearchDNADto } from './dto';
-import { DNAControllerTestData } from '../../test/dnaTestData';
+import { DNATestData } from '../../test/dnaTestData';
 
 describe('DNAController', () => {
   let dnaController: DNAController;
@@ -29,8 +29,8 @@ describe('DNAController', () => {
   // Create DNA
   describe('create', () => {
     it('should create a new DNA record', async () => {
-      const dnaData: CreateDNADto = DNAControllerTestData.createDNADto;
-      const expectedResult = DNAControllerTestData.createDNADto_res;
+      const dnaData: CreateDNADto = DNATestData.createDNADto;
+      const expectedResult = DNATestData.createDNADto_res;
 
       (dnaService.create as jest.Mock).mockResolvedValue(expectedResult);
 
@@ -40,26 +40,26 @@ describe('DNAController', () => {
     });
 
     it('should return validation error if DNA is empty', async () => {
-      const invalidDNAData: CreateDNADto = DNAControllerTestData.createDNADtoEmpty;
+      const invalidDNAData: CreateDNADto = DNATestData.createDNADtoEmpty;
 
       try {
         await dnaController.create(invalidDNAData);
       } catch (error) {
-        expect(error.status).toBe(DNAControllerTestData.createDNADtoEmptyRes.statusCode);
-        expect(error.response.message).toContain(DNAControllerTestData.createDNADtoEmptyRes.message);
-        expect(error.response.error).toBe(DNAControllerTestData.createDNADtoEmptyRes.error);
+        expect(error.status).toBe(DNATestData.createDNADtoEmptyRes.statusCode);
+        expect(error.response.message).toContain(DNATestData.createDNADtoEmptyRes.message);
+        expect(error.response.error).toBe(DNATestData.createDNADtoEmptyRes.error);
       }
 
     });
 
     it('should return validation error if DNA contains invalid characters', async () => {
-      const invalidDNAData: CreateDNADto = DNAControllerTestData.createDNADtoInvalid;
+      const invalidDNAData: CreateDNADto = DNATestData.createDNADtoInvalid;
       try {
       await dnaController.create(invalidDNAData)
       }catch (error) {
-        expect(error.status).toBe(DNAControllerTestData.createDNADtoInvalidRes.statusCode);
-        expect(error.response.message).toContain(DNAControllerTestData.createDNADtoInvalidRes.message);
-        expect(error.response.error).toBe(DNAControllerTestData.createDNADtoInvalidRes.error);
+        expect(error.status).toBe(DNATestData.createDNADtoInvalidRes.statusCode);
+        expect(error.response.message).toContain(DNATestData.createDNADtoInvalidRes.message);
+        expect(error.response.error).toBe(DNATestData.createDNADtoInvalidRes.error);
       }
     });
   });
@@ -67,8 +67,8 @@ describe('DNAController', () => {
   // Search DNA
   describe('search', () => {
     it('should return a list of DNA records', async () => {
-      const searchQuery: SearchDNADto = DNAControllerTestData.searchDNADto;
-      const expectedResult = DNAControllerTestData.searchDNADto_res;
+      const searchQuery: SearchDNADto = DNATestData.searchDNADto;
+      const expectedResult = DNATestData.searchDNADto_res;
 
       (dnaService.find as jest.Mock).mockResolvedValue(expectedResult);
 
@@ -78,7 +78,7 @@ describe('DNAController', () => {
     });
 
     it('should return an empty array if no records are found', async () => {
-      const searchQuery: SearchDNADto = DNAControllerTestData.searchDNADto;
+      const searchQuery: SearchDNADto = DNATestData.searchDNADto;
       const expectedResult: any[] = [];
 
       (dnaService.find as jest.Mock).mockResolvedValue(expectedResult);
@@ -89,8 +89,8 @@ describe('DNAController', () => {
     });
 
     it('should return all matched records if only the search argument is passed', async () => {
-      const query = { DNA: DNAControllerTestData.searchDNADto.DNA, levenshtein: 0 };
-      const expectedResult = DNAControllerTestData.searchDNADto_res;
+      const query = { DNA: DNATestData.searchDNADto.DNA, levenshtein: 0 };
+      const expectedResult = DNATestData.searchDNADto_res;
 
       (dnaService.find as jest.Mock).mockResolvedValue(expectedResult);
 
@@ -101,7 +101,7 @@ describe('DNAController', () => {
 
     it('should return all records if an empty string is passed as an argument', async () => {
       const query = { DNA: '', levenshtein: 0 };
-      const expectedResult = DNAControllerTestData.searchDNADto_res;
+      const expectedResult = DNATestData.searchDNADto_res;
 
       (dnaService.find as jest.Mock).mockResolvedValue(expectedResult);
 

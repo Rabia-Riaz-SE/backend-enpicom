@@ -3,8 +3,9 @@ import {IsString, IsOptional} from 'class-validator';
 
 export class SearchDNADto {
     @IsString()
-    DNA: string=""; 
+    @IsOptional()
+    DNA?: string=""; 
     
     @IsOptional()
-    levenshtein?: number
+    levenshtein?: string
 }

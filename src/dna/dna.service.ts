@@ -12,15 +12,11 @@ export class DNAService {
     async find(searchDNA: SearchDNADto): Promise<DNADto[]> {
         try {
             // Validate levenshtein distance is a number 
-            if (isNaN(searchDNA.levenshtein))
+            if (searchDNA?.levenshtein && isNaN(+(searchDNA?.levenshtein)))
                 throw new HttpException('levenshtein must be a number', HttpStatus.BAD_REQUEST);
 
-             // Validate search is not empty 
-            if (searchDNA.levenshtein && searchDNA.DNA.length < 1)
-                throw new HttpException('Search must not be empty', HttpStatus.BAD_REQUEST);
-            
             // Find and calculate levenshtein distance between search parameter and DB existing DNAs 
-            if (searchDNA.levenshtein && searchDNA.DNA.length > 0) {
+            if (searchDNA.levenshtein) {
                 const allDNAs = await this.dnaRepository.find();
                 return allDNAs.filter(val => +searchDNA.levenshtein === Utils.LevenshteinDistance(val.DNA, searchDNA.DNA.toUpperCase()));
             }
@@ -44,7 +40,7 @@ export class DNAService {
               });
             if (entity)
                 throw new HttpException(`${DNAValue} already exists `, HttpStatus.CONFLICT);
-            return await this.dnaRepository.save({...createDNA, dna: DNAValue});
+            return await this.dnaRepository.save({...createDNA, DNA: DNAValue});
         }
         catch (err) {
             throw new HttpException(err.message || 'Internal Server Error', err.status || HttpStatus.INTERNAL_SERVER_ERROR);
