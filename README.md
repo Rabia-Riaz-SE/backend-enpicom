@@ -1,35 +1,131 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# Backend Enpicom
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+This repository contains the backend service for the Enpicom project. It is built with NestJS, TypeORM, and PostgreSQL, and is containerized using Docker.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Table of Contents
 
-## Description
+- [Project Structure](#project-structure)
+- [Getting Started](#getting-started)
+  - [Prerequisites for Running Application in Docker](#prerequisites-for-running-application-in-docker)
+  - [Prerequisites for Running Application on Local System](#prerequisites-for-running-application-on-local-system)
+  - [Setting Up the Environment](#setting-up-the-environment)
+- [API Endpoints](#api-endpoints)
+- [Compile and Run the Project](#compile-and-run-the-project)
+- [Run Tests](#run-tests)
+- [License](#license)
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+### Project Structure
 
-## Project setup
+- **`Dockerfile`**: Defines the Docker image for the Node.js application.
 
-```bash
-$ npm install
+- **`docker-compose.yml`**: Sets up multiple services (PostgreSQL, PgAdmin, and the backend), useful for development and testing environments.
+
+- **`src/`**:
+  - **`app.module.ts`**: Main application module that consolidates other modules and global configurations.
+  - **`main.ts`**: Entry point for the application, where global pipes and CORS are configured.
+  - **`utils.ts`**: Contains utility functions like Levenshtein Distance, used across the application.
+
+- **`src/dna`**:
+  - **`dna.controller.ts`**: Defines routes and handlers for managing DNA records.
+  - **`dna.service.ts`**: Contains business logic for managing DNA records.
+  - **`dna.module.ts`**: Sets up the DNAModule with necessary imports and providers.
+
+- **`src/dna/entity`**:
+  - **`dna.entity.ts`**: Defines the `DNA` entity with TypeORM, representing the structure of the DNA table.
+
+- **`src/dna/dto`**:
+  - **`create-dna.dto.ts`**: DTO for creating DNA records, with validation rules.
+  - **`search-dna.dto.ts`**: DTO for searching DNA records.
+  - **`dna.dto.ts`**: DTO for representing DNA records.
+  - **`index.ts`**: Centralizes the export of DTOs to simplify imports.
+
+- **`config`**:
+  - **`typeorm.config.ts`**: Configures TypeORM for database interactions, including connection details, entity management, and schema synchronization. Uses environment variables to adapt to different environments.
+
+## Getting Started
+
+### Prerequisites for Running Application in Docker
+
+- <a href="https://www.docker.com/">Docker</a> 
+
+### Prerequisites for Running Application on Local System
+
+- <a href="http://nodejs.org" target="_blank">Node.js</a> 
+- <a href="https://www.postgresql.org" target="_blank">PostgreSQL</a>
+
+### Setting Up the Environment
+
+1. **Clone the Repository and Install Dependencies:**
+
+   ```bash
+   git clone https://github.com/Rabia-Riaz-SE/backend-enpicom.git
+   cd backend-enpicom
+
+2. **Configuration:**
+
+      Create a .env file in the root of the project with the following sample data environment variables:
+
+      ```bash
+
+      PORT=3000
+      DB_HOST=db
+      DB_PORT=5432
+      DB_USER=postgres
+      DB_PASS=postgres
+      DB_NAME=enpicom
+      DB_SYNC=true
+      PGADMIN_DEFAULT_EMAIL=admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD=pgadmin4
+
+      ```
+3. **Running the Application:**
+
+      #### Using Docker
+
+      1. Build and start the Docker containers:
+          ```bash
+
+          docker-compose up --build
+
+          ```
+      2. Access the application at [http://localhost:3000](http://localhost:3000).
+
+      3. Access pgAdmin at [http://localhost:5050](http://localhost:5050) with the credentials provided in the `.env` file.
+
+    #### Without Docker
+
+      1. Start the application locally:
+          ```bash
+
+          npm run start:dev
+
+          ```
+
+# API Endpoints
+
+### 1. POST /dna
+
+**Description**: Creates a new DNA record.
+
+**Request Body**:
+```json
+{
+  "dna": "ACTG"
+}
+```
+### 2. GET /dna
+
+**Description**: Searches for DNA records.
+
+**Query Parameters**:
+- `search`: DNA string to search for.
+- `levenshtein`: Optional parameter to filter by Levenshtein distance.
+
+**Example Request**:
+```http
+
+GET /dna?search=ACTG&levenshtein=1
+
 ```
 
 ## Compile and run the project
@@ -57,29 +153,3 @@ $ npm run test:e2e
 # test coverage
 $ npm run test:cov
 ```
-
-## Resources
-
-Check out a few resources that may come in handy when working with NestJS:
-
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
