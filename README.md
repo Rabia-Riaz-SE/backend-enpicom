@@ -48,7 +48,7 @@ This repository contains the backend service for the Enpicom project. It is buil
   - **`app.e2e-spec.ts`**: Defines End-to-End (E2E) test cases.
   - **`dnaTestData.ts`**: Provides mock data for testing DNA controller, service, and integration scenarios.
   - **`jest-e2e.json.ts`**: Configuration settings for running Jest in the end-to-end testing environment.
-  - **testUtils.ts**: Defines utility interfaces and DTOs for structuring mock data used in testing.
+  - **`testUtils.ts`**: Defines utility interfaces and DTOs for structuring mock data used in testing.
 
 ## Getting Started
 
@@ -91,10 +91,10 @@ This repository contains the backend service for the Enpicom project. It is buil
 
       #### Using Docker
 
-      1. Build and start the Docker containers:
+      1. Build and start in detached mode the Docker containers:
           ```bash
 
-          docker-compose up --build
+          docker-compose up --build -d  
 
           ```
       2. Access the application at [http://localhost:3000](http://localhost:3000).

@@ -1,5 +1,5 @@
 # Base image
-FROM node:18
+FROM node:20-alpine
 
 # Create app directory
 WORKDIR /app
@@ -17,8 +17,8 @@ COPY . .
 RUN npm run build
 
 # Start the server using the production build
-CMD ["npm", "run", "start:dev"]
-#CMD ["npm", "run", "start:production"]
+#CMD ["npm", "run", "start:dev"]
+CMD ["npm", "run", "start:prod"]
 
 
 
