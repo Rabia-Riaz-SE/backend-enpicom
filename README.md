@@ -48,7 +48,7 @@ This repository contains the backend service for the Enpicom project. It is buil
   - **`app.e2e-spec.ts`**: Defines End-to-End (E2E) test cases.
   - **`dnaTestData.ts`**: Provides mock data for testing DNA controller, service, and integration scenarios.
   - **`jest-e2e.json.ts`**: Configuration settings for running Jest in the end-to-end testing environment.
-  - **testUtils.ts**: Defines utility interfaces and DTOs for structuring mock data used in testing.
+  - **`testUtils.ts`**: Defines utility interfaces and DTOs for structuring mock data used in testing.
 
 ## Getting Started
 
