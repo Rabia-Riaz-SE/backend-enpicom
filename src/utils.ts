@@ -1,3 +1,5 @@
+import { HttpStatus } from '@nestjs/common';
+
 export default class Utils {
 
     static LevenshteinDistance = (str1: string, str2: string): number => {
@@ -21,3 +23,13 @@ export default class Utils {
     }
 }
 
+export interface DNATestDataInterface<TQuery, TResponse> {
+    query: TQuery;
+    response: TResponse;
+  }
+  
+  export class ErrorTypeDto {
+    statusCode: HttpStatus | string;
+    message: string[] | string;
+    error?: string;
+  }

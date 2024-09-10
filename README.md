@@ -23,12 +23,14 @@ This repository contains the backend service for the Enpicom project. It is buil
 - **`src/`**:
   - **`app.module.ts`**: Main application module that consolidates other modules and global configurations.
   - **`main.ts`**: Entry point for the application, where global pipes and CORS are configured.
-  - **`utils.ts`**: Contains utility functions like Levenshtein Distance, used across the application.
+  - **`utils.ts`**: Contains utility functions like Levenshtein Distance, used across the application .
 
 - **`src/dna`**:
   - **`dna.controller.ts`**: Defines routes and handlers for managing DNA records.
   - **`dna.service.ts`**: Contains business logic for managing DNA records.
   - **`dna.module.ts`**: Sets up the DNAModule with necessary imports and providers.
+  - **`dna.controller.spec.ts`**: Defines unit test for routes and handlers for managing DNA records.
+  - **`dna.service.spec.ts`**: Contains unit test for  business logic for managing DNA records.
 
 - **`src/dna/entity`**:
   - **`dna.entity.ts`**: Defines the `DNA` entity with TypeORM, representing the structure of the DNA table.
@@ -41,6 +43,12 @@ This repository contains the backend service for the Enpicom project. It is buil
 
 - **`config`**:
   - **`typeorm.config.ts`**: Configures TypeORM for database interactions, including connection details, entity management, and schema synchronization. Uses environment variables to adapt to different environments.
+
+- **`test/`**:
+  - **`app.e2e-spec.ts`**: Defines End-to-End (E2E) test cases.
+  - **`dnaTestData.ts`**: Provides mock data for testing DNA controller, service, and integration scenarios.
+  - **`jest-e2e.json.ts`**: Configuration settings for running Jest in the end-to-end testing environment.
+  - **testUtils.ts**: Defines utility interfaces and DTOs for structuring mock data used in testing.
 
 ## Getting Started
 

@@ -6,6 +6,7 @@ import { DNA } from './entity/dna.entity';
 import { CreateDNADto, SearchDNADto, DNADto } from './dto';
 import { HttpException } from '@nestjs/common';
 import { DNATestData } from '../../test/dnaTestData'
+import { DNATestDataInterface, ErrorTypeDto } from '../../test/testUtils';
 
 // Mock Repository
 const mockRepository = () => ({
@@ -36,70 +37,68 @@ describe('DNAService', () => {
 
   describe('create', () => {
     it('should create a new DNA record', async () => {
-      const createDto: CreateDNADto = DNATestData.createDNADto;
-      const createdRecord: DNADto = DNATestData.createDNADtoRes;
+      const data: DNATestDataInterface<CreateDNADto, DNADto> = DNATestData.createDNADto;
 
       repository.findOne = jest.fn().mockResolvedValue(null);
-      repository.save = jest.fn().mockResolvedValue(createdRecord);
+      repository.save = jest.fn().mockResolvedValue(data.response);
 
-      const result = await service.create(createDto);
-      expect(result).toEqual(createdRecord);
-      expect(repository.save).toHaveBeenCalledWith(createDto);
+      const result = await service.create(data.query);
+      expect(result).toEqual(data.response);
+      expect(repository.save).toHaveBeenCalledWith(data.query);
     });
 
     it('should throw an error if DNA already exists', async () => {
-      const createDto: CreateDNADto = DNATestData.createDNADto;;
-      const existingRecord: DNADto = DNATestData.createDNADtoRes;
+      const data: DNATestDataInterface<CreateDNADto, ErrorTypeDto> = DNATestData.duplicateDNA;
+      const existingRecord: DNADto = DNATestData.createDNADto.response;
 
       repository.findOne = jest.fn().mockResolvedValue(existingRecord);
 
-      await expect(service.create(createDto)).rejects.toThrow(new HttpException(DNATestData.duplicateDNARes.message,
-         DNATestData.duplicateDNARes.HttpStatus));
+      await expect(service.create(data.query)).rejects.toThrow(new HttpException(data.response.message,
+        +data.response.statusCode));
     });
   });
 
   describe('find', () => {
     it('should return matched DNA records if valid search and levenshtein distance are provided', async () => {
-      const searchDto: SearchDNADto = DNATestData.searchDNADto;
-      const mockDNAs: DNADto[] = DNATestData.searchDNADtoRes;
+      const data: DNATestDataInterface<SearchDNADto, DNADto[]> = DNATestData.searchDNADto;
 
-      repository.find = jest.fn().mockResolvedValue(mockDNAs);
+      repository.find = jest.fn().mockResolvedValue(data.response);
 
-      const result = await service.find(searchDto);
-      expect(result).toEqual(mockDNAs);
+      const result = await service.find(data.query);
+      expect(result).toEqual(data.response);
       expect(repository.find).toHaveBeenCalled();
     });
 
     it('should throw an error if levenshtein distance is not a number', async () => {
-      const searchDto: SearchDNADto = DNATestData.searchDNADtoLevenshteinNaN;
+      const data:DNATestDataInterface <SearchDNADto, ErrorTypeDto> = DNATestData.searchDNADtoWithInvalidLevenshtein;
 
-      await expect(service.find(searchDto)).rejects.toThrow(new HttpException(DNATestData.searchDNADtoLevenshteinNaNRes.message,
-         DNATestData.searchDNADtoLevenshteinNaNRes.HttpStatus));
+      await expect(service.find(data.query)).rejects.toThrow(new HttpException(data.response.message,
+        +data.response.statusCode));
     });
 
     it('should return all matched records matching DNA is empty, levenshtein distance is provided', async () => {
-      const searchDto: SearchDNADto = DNATestData.SearchDNADtoEmptyDNA
+
       const mockDNAs: DNADto[] = DNATestData.mockDNAs;
-      const response: DNADto[] = DNATestData.SearchDNADtoEmptyDNARes;
+      const data: DNATestDataInterface<SearchDNADto, DNADto[] > = DNATestData.searchDNADtoWithEmptyDNA
 
       repository.find = jest.fn().mockResolvedValue(mockDNAs);
 
-      const result = await service.find(searchDto);
-      expect(result).toEqual(response);
+      const result = await service.find(data.query);
+      expect(result).toEqual(data.response);
       expect(repository.find).toHaveBeenCalledWith()
 
     });
 
     it('should return all records matching DNA if levenshtein distance is not provided', async () => {
-      const searchDNADto: SearchDNADto = DNATestData.SearchDNADtoWithoutLevenshtein;
-      const mockDNAs: DNADto[] = DNATestData.SearchDNADtoWithoutLevenshteinRes;
+      const data: DNATestDataInterface<SearchDNADto, DNADto[] > = DNATestData.searchDNADtoWithNoLevenshtein
 
-      repository.find = jest.fn().mockResolvedValue(mockDNAs);
+      repository.find = jest.fn().mockResolvedValue(data.response);
 
-      const result = await service.find(searchDNADto);
-      expect(result).toEqual(mockDNAs);
+      const result = await service.find(data.query);
+      expect(result).toEqual(data.response);
       expect(repository.find).toHaveBeenCalledWith({
-        where: { DNA: Like(`${searchDNADto.DNA.toUpperCase()}%`) }}
+        where: { DNA: Like(`${data.query.DNA.toUpperCase()}%`) }
+      }
       );
     });
 
@@ -113,7 +112,8 @@ describe('DNAService', () => {
       const result = await service.find(searchDNADto);
       expect(result).toEqual(mockDNAs);
       expect(repository.find).toHaveBeenCalledWith({
-        where: { DNA: Like(`%${emptyString}`) }}
+        where: { DNA: Like(`%${emptyString}`) }
+      }
       );
     });
   });
