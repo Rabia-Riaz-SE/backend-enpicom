@@ -3,49 +3,61 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, Like } from 'typeorm';
 import { DNADto, CreateDNADto, SearchDNADto } from './dto';
 import { DNA } from './entity/dna.entity';
-import Utils from '../utils'
+import Utils from '../utils';
 
 @Injectable()
 export class DNAService {
-    constructor(@InjectRepository(DNA) private readonly dnaRepository: Repository<DNA>) { }
+  constructor(
+    @InjectRepository(DNA) private readonly dnaRepository: Repository<DNA>,
+  ) {}
 
-    async find(searchDNA: SearchDNADto): Promise<DNADto[]> {
-        try {
-            searchDNA.DNA = searchDNA?.DNA.toUpperCase() ?? '';
+  async find(searchDNA: SearchDNADto): Promise<DNADto[]> {
+    try {
+      // Ensure DNA is never null or undefined by assigning an empty string
+      const searchQuery = searchDNA?.DNA?.toUpperCase() ?? '';
 
-            // Validate levenshtein distance is a number 
-            if (searchDNA?.levenshtein && isNaN(+(searchDNA?.levenshtein)))
-                throw new HttpException('levenshtein must be a number', HttpStatus.BAD_REQUEST);
+      // Validate if levenshtein is a number
+      if (searchDNA?.levenshtein && isNaN(Number(searchDNA.levenshtein))) {
+        throw new HttpException('Levenshtein must be a number', HttpStatus.BAD_REQUEST);
+      }
 
-            // Find and calculate levenshtein distance between search parameter and DB existing DNAs 
-            if (searchDNA.levenshtein) {
-                const allDNAs = await this.dnaRepository.find();
-                return allDNAs.filter(val => +searchDNA.levenshtein === Utils.LevenshteinDistance(val.DNA, searchDNA.DNA));
-            }
+      // Handle case when levenshtein distance is provided
+      if (searchDNA?.levenshtein) {
+        const allDNAs = await this.dnaRepository.find();
+        return allDNAs.filter(
+          (val) => +searchDNA.levenshtein === Utils.LevenshteinDistance(val.DNA, searchQuery),
+        );
+      }
 
-            // if levenshtein distance not provided return only searched DNAs
-            return await this.dnaRepository.find({
-                where: { DNA: Like(`${searchDNA.DNA}%`) },
-            });
-        }
-        catch (err) {
-            throw new HttpException(err.message || 'Internal Server Error', err.status || HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+      // Return matched DNA records based on search query
+      return await this.dnaRepository.find({
+        where: { DNA: Like(`${searchQuery}%`) },
+      });
+    } catch (err) {
+      throw new HttpException(
+        err.message || 'Internal Server Error',
+        err.status || HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
+  }
 
-    async create(createDNA: CreateDNADto): Promise<DNADto> {
-        try {
+  async create(createDNA: CreateDNADto): Promise<DNADto> {
+    try {
+      const DNAValue = createDNA.DNA.toUpperCase();
+      
+      // Check if the DNA already exists in the database
+      const existingEntity = await this.dnaRepository.findOne({ where: { DNA: DNAValue } });
+      if (existingEntity) {
+        throw new HttpException(`${DNAValue} already exists`, HttpStatus.CONFLICT);
+      }
 
-            const DNAValue = createDNA.DNA.toUpperCase();
-            const entity = await this.dnaRepository.findOne({
-                where: { DNA: DNAValue }
-            });
-            if (entity)
-                throw new HttpException(`${DNAValue} already exists `, HttpStatus.CONFLICT);
-            return await this.dnaRepository.save({ ...createDNA, DNA: DNAValue });
-        }
-        catch (err) {
-            throw new HttpException(err.message || 'Internal Server Error', err.status || HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+      // Save the new DNA record
+      return await this.dnaRepository.save({ ...createDNA, DNA: DNAValue });
+    } catch (err) {
+      throw new HttpException(
+        err.message || 'Internal Server Error',
+        err.status || HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
+  }
 }

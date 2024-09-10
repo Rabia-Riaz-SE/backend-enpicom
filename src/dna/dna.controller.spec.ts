@@ -30,7 +30,7 @@ describe('DNAController', () => {
   describe('create', () => {
     it('should create a new DNA record', async () => {
       const dnaData: CreateDNADto = DNATestData.createDNADto;
-      const expectedResult = DNATestData.createDNADto_res;
+      const expectedResult = DNATestData.createDNADtoRes;
 
       (dnaService.create as jest.Mock).mockResolvedValue(expectedResult);
 
@@ -68,7 +68,7 @@ describe('DNAController', () => {
   describe('search', () => {
     it('should return a list of DNA records', async () => {
       const searchQuery: SearchDNADto = DNATestData.searchDNADto;
-      const expectedResult = DNATestData.searchDNADto_res;
+      const expectedResult = DNATestData.searchDNADtoRes;
 
       (dnaService.find as jest.Mock).mockResolvedValue(expectedResult);
 
@@ -89,25 +89,26 @@ describe('DNAController', () => {
     });
 
     it('should return all matched records if only the search argument is passed', async () => {
-      const query = { DNA: DNATestData.searchDNADto.DNA, levenshtein: 0 };
-      const expectedResult = DNATestData.searchDNADto_res;
+      const res = {"DNA": DNATestData.searchDNADto.DNA, "levenshtein": undefined}
+      const query = { DNA: DNATestData.searchDNADto.DNA };
+      const expectedResult = DNATestData.searchDNADtoRes;
 
       (dnaService.find as jest.Mock).mockResolvedValue(expectedResult);
 
       const result = await dnaController.find(query.DNA);
       expect(result).toEqual(expectedResult);
-      expect(dnaService.find).toHaveBeenCalledWith(query);
+      expect(dnaService.find).toHaveBeenCalledWith(res);
     });
 
     it('should return all records if an empty string is passed as an argument', async () => {
-      const query = { DNA: '', levenshtein: 0 };
-      const expectedResult = DNATestData.searchDNADto_res;
+      const expectedResult = DNATestData.searchDNADtoRes;
+      const res = {"DNA": "", "levenshtein": undefined};
 
       (dnaService.find as jest.Mock).mockResolvedValue(expectedResult);
 
       const result = await dnaController.find('');
       expect(result).toEqual(expectedResult);
-      expect(dnaService.find).toHaveBeenCalledWith(query);
+      expect(dnaService.find).toHaveBeenCalledWith(res);
     });
   });
 });

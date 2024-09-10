@@ -24,7 +24,7 @@ export class DNATestData {
   };
 
   // Dummy data for SearchDNADto positive scenarios
-  public static searchDNADto: SearchDNADto = { DNA: 'ACTG', levenshtein: '1' };
+  public static searchDNADto: SearchDNADto = { DNA: 'ACT', levenshtein: '1' };
   public static searchDNADtoRes: DNADto[] = [
     { id: 1, DNA: 'ACTG' },
     { id: 2, DNA: 'ACTC' },
@@ -35,16 +35,26 @@ export class DNATestData {
     HttpStatus: HttpStatus.CONFLICT
   };
 
-  public static createDNADtoLeveNAN: SearchDNADto ={ DNA: 'ACTG', levenshtein: "x" };
-  public static LeveNaNRes = { 
-    message: 'levenshtein must be a number',  
+  public static searchDNADtoLevenshteinNaN: SearchDNADto ={ DNA: 'ACTG', levenshtein: "x" };
+  public static searchDNADtoLevenshteinNaNRes = { 
+    message: 'Levenshtein must be a number',  
     HttpStatus: HttpStatus.BAD_REQUEST
   }
 
-  public static createEmptyDNADto: SearchDNADto ={ DNA: '', levenshtein: '1' };
-  public static LeveEmptyRes = { 
-    message: 'levenshtein must be a number',  
-    HttpStatus: HttpStatus.BAD_REQUEST
-  }
+
+  public static SearchDNADtoEmptyDNA = { DNA: '', levenshtein: '1' };
+  public static mockDNAs: DNADto[] = [
+    { id: 1, DNA: 'ACTG' },
+    { id: 2, DNA: 'ACTC' },
+    { id: 3, DNA: 'A' },
+    { id: 4, DNA: 'C' },
+  ];
+  public static SearchDNADtoEmptyDNARes: DNADto[] = [ { id: 3, DNA: 'A' }, { id: 4, DNA: 'C' }]
+  public static SearchDNADtoWithoutLevenshtein: SearchDNADto = { DNA: 'AC' }
+  public static SearchDNADtoWithoutLevenshteinRes: DNADto[] = [   
+    { id: 1, DNA: 'ACTG' },
+    { id: 2, DNA: 'ACTC' }
+  ];
+
 
 }
