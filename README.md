@@ -76,7 +76,7 @@ This repository contains the backend service for the Enpicom project. It is buil
       ```bash
 
       PORT=3000
-      DB_HOST=db
+      DB_HOST=db 
       DB_PORT=5432
       DB_USER=postgres
       DB_PASS=postgres
@@ -86,6 +86,7 @@ This repository contains the backend service for the Enpicom project. It is buil
       PGADMIN_DEFAULT_PASSWORD=pgadmin4
 
       ```
+      **Note:** If running the application locally without Docker, set `DB_HOST=localhost` in your environment variables.
 3. **Running the Application:**
 
       #### Using Docker
