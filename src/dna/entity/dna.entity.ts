@@ -12,6 +12,6 @@ export class DNA {
         type: 'text',
         unique: true
     })
-    dna: string;
+    DNA: string;
 
 }

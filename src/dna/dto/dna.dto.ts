@@ -1,4 +1,4 @@
-export class DNAdto {
-    dna: string; 
+export class DNADto {
+    DNA: string; 
     id : number
 }
