@@ -91,10 +91,10 @@ This repository contains the backend service for the Enpicom project. It is buil
 
       #### Using Docker
 
-      1. Build and start the Docker containers:
+      1. Build and start in detached mode the Docker containers:
           ```bash
 
-          docker-compose up --build
+          docker-compose up --build -d  
 
           ```
       2. Access the application at [http://localhost:3000](http://localhost:3000).
