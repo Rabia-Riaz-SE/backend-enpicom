@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Body, Post, Query } from '@nestjs/common';
+import { Controller, Get, Body, Post, Query } from '@nestjs/common';
 import { DNAService } from './dna.service';
 import { CreateDNADto } from './dto'
 
