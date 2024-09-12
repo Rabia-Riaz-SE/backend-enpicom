@@ -19,6 +19,3 @@ RUN npm run build
 # Start the server using the production build
 #CMD ["npm", "run", "start:dev"]
 CMD ["npm", "run", "start:prod"]
-
-
-
