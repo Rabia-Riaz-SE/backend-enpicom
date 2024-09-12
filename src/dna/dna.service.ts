@@ -23,7 +23,7 @@ export class DNAService {
 
       // Handle case when levenshtein distance is provided
       if (searchDNA?.levenshtein) {
-        const allDNAs = await this.dnaRepository.find();
+        const allDNAs = await this.dnaRepository.find({order: { DNA: 'ASC' }});
         return allDNAs.filter(
           (val) => +searchDNA.levenshtein === Utils.LevenshteinDistance(val.DNA, searchQuery),
         );
@@ -32,6 +32,7 @@ export class DNAService {
       // Return matched DNA records based on search query
       return await this.dnaRepository.find({
         where: { DNA: Like(`${searchQuery}%`) },
+        order: { DNA: 'ASC' }, 
       });
     } catch (err) {
       throw new HttpException(
