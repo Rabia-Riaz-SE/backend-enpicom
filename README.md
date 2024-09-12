@@ -12,7 +12,6 @@ This repository contains the backend service for the Enpicom project. It is buil
 - [API Endpoints](#api-endpoints)
 - [Compile and Run the Project](#compile-and-run-the-project)
 - [Run Tests](#run-tests)
-- [License](#license)
 
 ### Project Structure
 
