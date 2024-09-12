@@ -105,7 +105,7 @@ This repository contains the backend service for the Enpicom project. It is buil
       1. Start the application locally:
           ```bash
 
-          npm run start:dev
+          npm run dev
 
           ```
 
@@ -143,10 +143,10 @@ GET /dna?search=ACTG&levenshtein=1
 $ npm run start
 
 # watch mode
-$ npm run start:dev
+$ npm run dev
 
 # production mode
-$ npm run start:prod
+$ npm run prod
 ```
 
 ## Run tests
