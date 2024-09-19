@@ -2,16 +2,14 @@ import { CreateDNADto, DNADto, SearchDNADto } from '../src/dna/dto';
 import { HttpStatus } from '@nestjs/common';
 import { DNATestDataInterface, ErrorTypeDto } from '../src/utils';
 
-const  newDNA:string = 'ACCCT';
+const newDNA: string = 'ACCCT';
 export class DNATestData {
-
   public static mockDNAs: DNADto[] = [
     { id: 1, DNA: 'ACTG' },
     { id: 2, DNA: 'ACTC' },
     { id: 3, DNA: 'A' },
     { id: 4, DNA: 'C' },
   ];
-
 
   // Dummy data for CreateDNADto
   public static createDNADto: DNATestDataInterface<CreateDNADto, DNADto> = {
@@ -20,7 +18,10 @@ export class DNATestData {
   };
 
   // Dummy data for CreateDNADto negative scenarios
-  public static createDNADtoEmpty: DNATestDataInterface<CreateDNADto, ErrorTypeDto> = {
+  public static createDNADtoEmpty: DNATestDataInterface<
+    CreateDNADto,
+    ErrorTypeDto
+  > = {
     query: { DNA: '' },
     response: {
       statusCode: HttpStatus.BAD_REQUEST,
@@ -29,15 +30,19 @@ export class DNATestData {
     },
   };
 
-  public static duplicateDNA: DNATestDataInterface<CreateDNADto, ErrorTypeDto> = {
-    query: DNATestData.createDNADto.query,
-    response: {
-      message: `${DNATestData.createDNADto.query.DNA} already exists`,
-      statusCode: HttpStatus.CONFLICT,
-    },
-  };
+  public static duplicateDNA: DNATestDataInterface<CreateDNADto, ErrorTypeDto> =
+    {
+      query: DNATestData.createDNADto.query,
+      response: {
+        message: `${DNATestData.createDNADto.query.DNA} already exists`,
+        statusCode: HttpStatus.CONFLICT,
+      },
+    };
 
-  public static createDNADtoInvalid: DNATestDataInterface<CreateDNADto, ErrorTypeDto> = {
+  public static createDNADtoInvalid: DNATestDataInterface<
+    CreateDNADto,
+    ErrorTypeDto
+  > = {
     query: { DNA: 'ss' },
     response: {
       statusCode: HttpStatus.BAD_REQUEST,
@@ -45,7 +50,6 @@ export class DNATestData {
       error: 'Bad Request',
     },
   };
-
 
   // Dummy data for SearchDNADto positive scenarios
   public static searchDNADto: DNATestDataInterface<SearchDNADto, DNADto[]> = {
@@ -57,7 +61,10 @@ export class DNATestData {
   };
 
   // Dummy data for CreateDNADto negative scenarios
-  public static searchDNADtoWithInvalidLevenshtein: DNATestDataInterface<SearchDNADto, ErrorTypeDto> = {
+  public static searchDNADtoWithInvalidLevenshtein: DNATestDataInterface<
+    SearchDNADto,
+    ErrorTypeDto
+  > = {
     query: { DNA: 'ACTG', levenshtein: 'x' },
     response: {
       message: 'Levenshtein must be a number',
@@ -65,7 +72,10 @@ export class DNATestData {
     },
   };
 
-  public static searchDNADtoWithEmptyDNA: DNATestDataInterface<SearchDNADto, DNADto[]> = {
+  public static searchDNADtoWithEmptyDNA: DNATestDataInterface<
+    SearchDNADto,
+    DNADto[]
+  > = {
     query: { DNA: '', levenshtein: '1' },
     response: [
       { id: 3, DNA: 'A' },
@@ -73,7 +83,10 @@ export class DNATestData {
     ],
   };
 
-  public static searchDNADtoWithNoLevenshtein: DNATestDataInterface<SearchDNADto, DNADto[]> = {
+  public static searchDNADtoWithNoLevenshtein: DNATestDataInterface<
+    SearchDNADto,
+    DNADto[]
+  > = {
     query: { DNA: 'AC' },
     response: [
       { id: 1, DNA: 'ACTG' },
@@ -81,8 +94,11 @@ export class DNATestData {
     ],
   };
 
-  public static searchDNADtoUnMatchedDNA: DNATestDataInterface<SearchDNADto, DNADto[]> = {
-    query: { DNA: 'Fb' , levenshtein: '0'},
+  public static searchDNADtoUnMatchedDNA: DNATestDataInterface<
+    SearchDNADto,
+    DNADto[]
+  > = {
+    query: { DNA: 'Fb', levenshtein: '0' },
     response: [],
   };
 }
