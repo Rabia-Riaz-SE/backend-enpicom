@@ -6,7 +6,6 @@ import * as dotenv from 'dotenv';
 dotenv.config();
 
 async function initializeDatabase() {
-
   // Create a new data source instance
   const dataSource = new DataSource({
     type: 'postgres',
@@ -14,7 +13,7 @@ async function initializeDatabase() {
     port: Number(process.env?.DB_PORT),
     username: process.env?.DB_USER,
     password: process.env?.DB_PASS,
-    synchronize: Boolean(process.env?.DB_SYNC)
+    synchronize: Boolean(process.env?.DB_SYNC),
   });
 
   // Initialize the data source
@@ -24,7 +23,7 @@ async function initializeDatabase() {
   const databaseName = process.env.DB_NAME;
   const dbExists = await dataSource.query(
     `SELECT 1 FROM pg_database WHERE datname = $1`,
-    [databaseName]
+    [databaseName],
   );
 
   if (dbExists.length === 0) {
@@ -40,7 +39,9 @@ async function initializeDatabase() {
 
 // Main entry point
 (async () => {
-  try { await initializeDatabase(); } catch (err) {
+  try {
+    await initializeDatabase();
+  } catch (err) {
     console.error('Failed to initialize the database:', err);
     process.exit(1);
   }

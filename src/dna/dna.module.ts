@@ -5,8 +5,8 @@ import { DNA } from './entity/dna.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Module({
-    imports: [TypeOrmModule.forFeature([DNA])],
-    controllers: [DNAController],
-    providers: [DNAService]
+  imports: [TypeOrmModule.forFeature([DNA])],
+  controllers: [DNAController],
+  providers: [DNAService],
 })
 export class DNAModule {}

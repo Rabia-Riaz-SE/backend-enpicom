@@ -1,11 +1,10 @@
-
-import {IsString, IsOptional} from 'class-validator';
+import { IsString, IsOptional } from 'class-validator';
 
 export class SearchDNADto {
-    @IsString()
-    @IsOptional()
-    DNA?: string=""; 
-    
-    @IsOptional()
-    levenshtein?: string
+  @IsString()
+  @IsOptional()
+  DNA?: string = '';
+
+  @IsOptional()
+  levenshtein?: string;
 }

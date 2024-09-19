@@ -18,21 +18,28 @@ export class DNAService {
 
       // Validate if levenshtein is a number
       if (searchDNA?.levenshtein && isNaN(Number(searchDNA.levenshtein))) {
-        throw new HttpException('Levenshtein must be a number', HttpStatus.BAD_REQUEST);
+        throw new HttpException(
+          'Levenshtein must be a number',
+          HttpStatus.BAD_REQUEST,
+        );
       }
 
       // Handle case when levenshtein distance is provided
       if (searchDNA?.levenshtein) {
-        const allDNAs = await this.dnaRepository.find({order: { DNA: 'ASC' }});
+        const allDNAs = await this.dnaRepository.find({
+          order: { DNA: 'ASC' },
+        });
         return allDNAs.filter(
-          (val) => +searchDNA.levenshtein === Utils.LevenshteinDistance(val.DNA, searchQuery),
+          (val) =>
+            +searchDNA.levenshtein ===
+            Utils.LevenshteinDistance(val.DNA, searchQuery),
         );
       }
 
       // Return matched DNA records based on search query
       return await this.dnaRepository.find({
         where: { DNA: Like(`${searchQuery}%`) },
-        order: { DNA: 'ASC' }, 
+        order: { DNA: 'ASC' },
       });
     } catch (err) {
       throw new HttpException(
@@ -45,11 +52,16 @@ export class DNAService {
   async create(createDNA: CreateDNADto): Promise<DNADto> {
     try {
       const DNAValue = createDNA.DNA.toUpperCase();
-      
+
       // Check if the DNA already exists in the database
-      const existingEntity = await this.dnaRepository.findOne({ where: { DNA: DNAValue } });
+      const existingEntity = await this.dnaRepository.findOne({
+        where: { DNA: DNAValue },
+      });
       if (existingEntity) {
-        throw new HttpException(`${DNAValue} already exists`, HttpStatus.CONFLICT);
+        throw new HttpException(
+          `${DNAValue} already exists`,
+          HttpStatus.CONFLICT,
+        );
       }
 
       // Save the new DNA record
