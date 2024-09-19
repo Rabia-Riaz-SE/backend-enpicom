@@ -12,6 +12,7 @@ This repository contains the backend service for the Enpicom project. It is buil
 - [API Endpoints](#api-endpoints)
 - [Compile and Run the Project](#compile-and-run-the-project)
 - [Run Tests](#run-tests)
+- [Format](#run-prettier-for-file-format)
 
 ### Project Structure
 
@@ -160,4 +161,12 @@ $ npm run test:e2e
 
 # test coverage
 $ npm run test:cov
+```
+
+## Run Prettier (For file format)
+
+```bash
+
+$ npm run pretty
+
 ```
